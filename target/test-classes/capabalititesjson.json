@@ -1,0 +1,11 @@
+{
+  "capabilities": {
+    "appium:deviceName": "sdk_gphone16k_x86_64",
+    "appium:udid": "emulator-5554",
+    "appium:platformName": "Android",
+    "appium:platformVersion": "15",
+    "appium:automationName": "UiAutomator2",
+    "appium:appPackage": "org.joinmastodon.android",
+    "appium:appActivity": "org.joinmastodon.android.MainActivity"
+  }
+}
