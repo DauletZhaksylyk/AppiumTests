@@ -2,7 +2,6 @@ package Base;
 
 import io.appium.java_client.android.AndroidDriver;
 import io.qameta.allure.internal.shadowed.jackson.databind.ObjectMapper;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.io.File;
@@ -16,21 +15,17 @@ public class DriverSingletonByJson {
     private static AndroidDriver driver;
 
     private DriverSingletonByJson() {
-        DesiredCapabilities capabilities = loadCapabilitiesFromJson(AndroidConsts.capabilityPath);
+        DesiredCapabilities capabilities = loadCapabilitiesFromJson(AndroidConsts.CAPABILITY_PATH);
         try {
-            driver = new AndroidDriver(new URL(AndroidConsts.url), capabilities);
+            driver = new AndroidDriver(new URL(AndroidConsts.URL), capabilities);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
     }
 
     public static DriverSingletonByJson getInstance() {
-        if (instance == null) {
-            synchronized (DriverSingletonByJson.class) {
-                if (instance == null) {
-                    instance = new DriverSingletonByJson();
-                }
-            }
+        if (instance == null){
+            instance = new DriverSingletonByJson();
         }
         return instance;
     }
@@ -55,15 +50,5 @@ public class DriverSingletonByJson {
             getInstance();
         }
         return driver;
-    }
-
-    public static void executeAdbCommand(String command) {
-        try {
-            ProcessBuilder processBuilder = new ProcessBuilder("adb", "shell", command);
-            Process process = processBuilder.start();
-            process.waitFor();
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 }

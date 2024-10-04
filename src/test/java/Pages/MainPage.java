@@ -1,18 +1,19 @@
 package Pages;
 
 import Base.BaseClass;
+import Base.DriverSingletonByJson;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class MainPage {
-    private static final By ButtonId = new By.ById("org.joinmastodon.android:id/btn_log_in");
+    private static final By BUTTON_ID = new By.ById("org.joinmastodon.android:id/btn_log_in");
 
     public boolean CheckMainPageIsOpen() {
-        BaseClass.wait1().until(ExpectedConditions.visibilityOfElementLocated(ButtonId));
-        return BaseClass.getDriver().findElement(ButtonId).isDisplayed();
+        BaseClass.getWait().until(ExpectedConditions.visibilityOfElementLocated(BUTTON_ID));
+        return DriverSingletonByJson.getDriver().findElement(BUTTON_ID).isDisplayed();
     }
 
     public void ClickLogInButton() {
-        BaseClass.getDriver().findElement(ButtonId).click();
+        DriverSingletonByJson.getDriver().findElement(BUTTON_ID).click();
     }
 }

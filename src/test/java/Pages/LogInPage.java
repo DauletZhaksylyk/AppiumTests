@@ -1,23 +1,24 @@
 package Pages;
 
 import Base.BaseClass;
+import Base.DriverSingletonByJson;
 import org.openqa.selenium.By;
 
 public class LogInPage {
-    private static final By SearchField = new By.ById("org.joinmastodon.android:id/search_edit");
-    private static final By Checkbox = new By.ById("org.joinmastodon.android:id/radiobtn");
-    private static final By NextButton = new By.ById("org.joinmastodon.android:id/btn_next");
+    private static final By SEARCH_FIELD = new By.ById("org.joinmastodon.android:id/search_edit");
+    private static final By CHECKBOX = new By.ById("org.joinmastodon.android:id/radiobtn");
+    private static final By NEXT_BUTTON = new By.ById("org.joinmastodon.android:id/btn_next");
 
     public void FillSearchField(String server) {
-        BaseClass.getDriver().findElement(SearchField).sendKeys(server);
+        DriverSingletonByJson.getDriver().findElement(SEARCH_FIELD).sendKeys(server);
     }
 
     public void ClickCheckBox() {
-        BaseClass.getDriver().findElement(Checkbox).click();
+        DriverSingletonByJson.getDriver().findElement(CHECKBOX).click();
     }
 
     public void ClickNextButton() {
-        BaseClass.getDriver().findElement(NextButton).click();
+        DriverSingletonByJson.getDriver().findElement(NEXT_BUTTON).click();
     }
 
     public void Authorize(String server) {

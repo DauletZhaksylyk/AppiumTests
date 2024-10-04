@@ -2,7 +2,9 @@ package Test;
 
 import Base.AndroidConsts;
 import Base.BaseClass;
-import Base.DriverSingletonByJson;
+import DriverUtils.ExecuteAdbCommandUtil;
+import DriverUtils.IsKeyBoardVisibleUtils;
+import DriverUtils.SwitchToWebViewUtil;
 import Pages.*;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -19,14 +21,14 @@ public class BaseTest extends BaseClass {
 
     private void softAsserts() {
         softAssert.assertTrue(explorePage.CheckArePostsDisplayed(), "All posts are not displayed");
-        softAssert.assertTrue(explorePage.CheckThePositionIsNot0(), "Result is null");
+        softAssert.assertTrue(explorePage.CheckThePositionIsNotNull(), "Result is null");
         softAssert.assertAll();
     }
 
     private void CommonSteps() {
         Assert.assertTrue(mainPage.CheckMainPageIsOpen());
         mainPage.ClickLogInButton();
-        logPage.Authorize(AndroidConsts.appServer);
+        logPage.Authorize(AndroidConsts.APP_SERVER);
         authPage.ClickAuthorizeButton();
         Assert.assertTrue(homePage.CheckIsHomePageOpened(), "Home page is not opened");
         homePage.ClickExploreTab();
@@ -34,29 +36,29 @@ public class BaseTest extends BaseClass {
     }
 
     private void isKeyBoardVisible() {
-        Assert.assertFalse(explorePage.isKeyboardVisible(), "Keyboard is visible");
+        Assert.assertFalse(IsKeyBoardVisibleUtils.isKeyboardVisible(), "Keyboard is visible");
     }
 
     @Test
     public void testCase1() {
         mainPage.CheckMainPageIsOpen();
-        DriverSingletonByJson.getInstance().executeAdbCommand(AndroidConsts.closeApp);
+        ExecuteAdbCommandUtil.executeAdbCommand(AndroidConsts.CLOSE_APP);
         Assert.assertTrue(true, "App is closed and element is not displayed");
-        DriverSingletonByJson.getInstance().executeAdbCommand(AndroidConsts.reOpenApp);
+        ExecuteAdbCommandUtil.executeAdbCommand(AndroidConsts.RE_OPEN_APP);
         CommonSteps();
         explorePage.ClickFirstPost();
         Assert.assertTrue(firstPostPage.CheckFirstPostIsOpen(), "First post is not opened");
-        DriverSingletonByJson.getInstance().executeAdbCommand(AndroidConsts.closeApp);
+        ExecuteAdbCommandUtil.executeAdbCommand(AndroidConsts.CLOSE_APP);
     }
 
     @Test
     public void testCase2() {
         CommonSteps();
         softAsserts();
-        explorePage.FillSearchField(AndroidConsts.baseText, AndroidConsts.text);
-        Assert.assertTrue(explorePage.CheckDoesSearchFieldContains(AndroidConsts.text), "Search field is not contains" + AndroidConsts.text);
-        explorePage.ClearSearchField(AndroidConsts.text);
-        Assert.assertTrue(explorePage.CheckDoesSearchFieldContains(AndroidConsts.baseText), "Search field is not contains" + AndroidConsts.baseText);
+        explorePage.FillSearchField(AndroidConsts.BASE_TEXT, AndroidConsts.TEXT);
+        Assert.assertTrue(explorePage.CheckDoesSearchFieldContains(AndroidConsts.TEXT), "Search field is not contains" + AndroidConsts.TEXT);
+        explorePage.ClearSearchField(AndroidConsts.TEXT);
+        Assert.assertTrue(explorePage.CheckDoesSearchFieldContains(AndroidConsts.BASE_TEXT), "Search field is not contains" + AndroidConsts.BASE_TEXT);
     }
 
     @Test
@@ -85,19 +87,19 @@ public class BaseTest extends BaseClass {
         CommonSteps();
         explorePage.EnterTextByKeyBoard();
         isKeyBoardVisible();
-        Assert.assertEquals(explorePage.GetSearchFieldsText(AndroidConsts.filledByKeyboard), AndroidConsts.filledByKeyboard, "Not equals");
+        Assert.assertEquals(explorePage.GetSearchFieldsText(AndroidConsts.FILLED_BY_KEYBOARD), AndroidConsts.FILLED_BY_KEYBOARD, "Not equals");
     }
 
     @Test
     public void testCase4(){
         CommonSteps();
-        explorePage.findPost(4);
+        explorePage.verifyPostAtIndex(20);
     }
 
     @Test
     public void testCase5() {
         CommonSteps();
         explorePage.getCurrentContext();
-        explorePage.SwitchToWebView();
+        SwitchToWebViewUtil.SwitchToWebView();
     }
 }
