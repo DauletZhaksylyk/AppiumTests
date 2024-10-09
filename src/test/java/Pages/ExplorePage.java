@@ -131,12 +131,12 @@ public class ExplorePage {
 //                }
 
                 List<WebElement> foundPosts = DriverSingletonByJson.getDriver().findElements(GET_POST_BY_TAB);
-                Set<String> uniquePosts = new HashSet<>();
+                Set<Integer> uniquePosts = new HashSet<>();
 
                 for (WebElement post : foundPosts) {
                     if (post.isDisplayed()) {
-                        String postText = post.getText();
-                        if (uniquePosts.add(postText)) {
+                        int postHashcode = post.hashCode();
+                        if (uniquePosts.add(postHashcode)) {
                             visiblePostsCount += 1;
 
                             if (visiblePostsCount == targetIndex) {
@@ -145,7 +145,7 @@ public class ExplorePage {
                                 return;
                             }
                         } else {
-                            LOGGER.debug("Дублированный пост найден и исключен: " + postText);
+                            LOGGER.debug("Дублированный пост найден и исключен: " + postHashcode);
                         }
                     }
                 }
