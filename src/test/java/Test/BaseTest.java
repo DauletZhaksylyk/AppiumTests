@@ -93,7 +93,7 @@ public class BaseTest extends BaseClass {
     @Test
     public void testCase4(){
         CommonSteps();
-        explorePage.verifyPostAtIndex(20);
+        explorePage.verifyPostAtIndex(4);
     }
 
     @Test

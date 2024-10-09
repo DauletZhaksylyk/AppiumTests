@@ -107,24 +107,56 @@ public class ExplorePage {
             BaseClass.getWait().until(ExpectedConditions.visibilityOfElementLocated(GET_POST_BY_TAB));
 
             try {
+//                List<WebElement> foundPosts = DriverSingletonByJson.getDriver().findElements(GET_POST_BY_TAB);
+//
+//                for (WebElement post : foundPosts) {
+//                    if (post.isDisplayed()) {
+//                        visiblePostsCount += 1;
+//
+//                        if (visiblePostsCount == targetIndex) {
+//                            LOGGER.debug("Пост на индексе " + targetIndex + " найден.");
+//                            LOGGER.debug("Текст поста : " + post.getText());
+//                            return;
+//                        }
+//                    }
+//                }
+//
+//                Set<String> uniquePosts = new HashSet<>();
+//                for (WebElement post : foundPosts) {
+//                    String postText = post.getText();
+//                    if (!uniquePosts.add(postText)) {
+//                        System.out.println("Duplicate post found: " + postText);
+//                        visiblePostsCount -= 1;
+//                    }
+//                }
+
                 List<WebElement> foundPosts = DriverSingletonByJson.getDriver().findElements(GET_POST_BY_TAB);
+                Set<String> uniquePosts = new HashSet<>();
 
                 for (WebElement post : foundPosts) {
                     if (post.isDisplayed()) {
-                        visiblePostsCount += 1;
+                        String postText = post.getText();
+                        if (uniquePosts.add(postText)) {
+                            visiblePostsCount += 1;
 
-                        if (visiblePostsCount == targetIndex) {
-                            LOGGER.debug("Пост на индексе " + targetIndex + " найден.");
-                            return;
+                            if (visiblePostsCount == targetIndex) {
+                                LOGGER.debug("Пост на индексе " + targetIndex + " найден.");
+                                LOGGER.debug("Текст поста : " + post.getText());
+                                return;
+                            }
+                        } else {
+                            LOGGER.debug("Дублированный пост найден и исключен: " + postText);
                         }
                     }
                 }
+
+
             } catch (NoSuchElementException e) {
                 LOGGER.debug("Posts not found, swiping down.");
             } catch (StaleElementReferenceException e) {
                 LOGGER.debug("Stale element reference, trying again.");
             }
-
+            
             swipeDown();
         }
 
@@ -137,8 +169,8 @@ public class ExplorePage {
         int height = DriverSingletonByJson.getDriver().manage().window().getSize().getHeight();
 
         int startX = width / 2;
-        int startY = (int) (height * 0.85);
-        int endY = (int) (height * 0.1);
+        int startY = (int) (height * 0.75);
+        int endY = (int) (height * 0.3);
 
         PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
         Sequence swipe = new Sequence(finger, 1)
@@ -147,7 +179,7 @@ public class ExplorePage {
                 .addAction(finger.createPointerMove(Duration.ofMillis(500), PointerInput.Origin.viewport(), startX, endY))
                 .addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
 
-        DriverSingletonByJson.getDriver().perform(Arrays.asList(swipe));
+        DriverSingletonByJson.getDriver().perform(Collections.singletonList(swipe));
         LOGGER.debug("Свайп выполнен: startX=" + startX + ", startY=" + startY + ", endY=" + endY);
     }
 }
